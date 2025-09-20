@@ -24,14 +24,14 @@ const Chat = () => {
         <>
             <button
                 onClick={() => setIsOpen(!isOpen)}
-                className="fixed bottom-6 right-6 w-14 h-14 rounded-full bg-black text-white flex items-center justify-center shadow-lg hover:scale-105 transition-transform z-50 cursor-pointer"
+                className="fixed bottom-6 right-6 w-14 h-14 rounded-full bg-[#ED957A] text-white flex items-center justify-center shadow-lg hover:scale-105 transition-transform z-50 cursor-pointer"
             >
                 💬
             </button>
 
             {isOpen && (
-                <div className="fixed bottom-24 right-6 w-80 h-96 bg-white rounded-xl shadow-lg flex flex-col overflow-hidden z-50">
-                    <div className="bg-black text-white px-4 py-2 flex justify-between items-center">
+                <div className="fixed bottom-24 right-6 w-200 h-120 bg-white rounded-xl shadow-lg flex flex-col overflow-hidden z-50">
+                    <div className="bg-[#ED957A] text-white px-4 py-2 flex justify-between items-center">
                         <span className="font-medium">AI Assistant</span>
                         <button
                             onClick={() => setIsOpen(false)}
@@ -54,7 +54,7 @@ const Chat = () => {
                                 <div
                                     className={`px-3 py-2 rounded-lg w-fit max-w-[75%] break-words ${
                                         msg.sender === "user"
-                                            ? "bg-black text-white"
+                                            ? "bg-[#6a1903] text-white"
                                             : "bg-gray-200 text-gray-900"
                                     }`}
                                 >
@@ -75,7 +75,7 @@ const Chat = () => {
                         />
                         <button
                             onClick={handleSend}
-                            className="bg-black text-white px-4 py-2 rounded-lg hover:opacity-90 transition cursor-pointer"
+                            className="bg-[#ED957A] text-white px-4 py-2 rounded-lg hover:bg-[#6a1903] transition cursor-pointer"
                         >
                             Send
                         </button>

@@ -4,7 +4,29 @@ import ProductCard from "@/_components/Card";
 import Chat from "@/_components/Chat";
 import Link from "next/link";
 
-const Dashboard = () => {
+const searchIcon = "/search-icon.png";
+const shorts = [
+    {
+        id: 1,
+        title: "Craft Short 1",
+        video: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4",
+        thumbnail: "img1.jpg",
+    },
+    {
+        id: 2,
+        title: "Craft Short 2",
+        video: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/Sintel.mp4",
+        thumbnail: "img2.jpg",
+    },
+    {
+        id: 3,
+        title: "Craft Short 3",
+        video: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/TearsOfSteel.mp4",
+        thumbnail: "img3.jpg",
+    },
+];
+
+const BDashboard = () => {
     const [products, setProducts] = useState([
         {
             id: 1,
@@ -109,19 +131,27 @@ const Dashboard = () => {
 
     return (
         <div className="mt-30 px-10">
-            <h2 className="text-2xl font-medium mb-6">My Products</h2>
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6">
-                {/* Create Card */}
-                <div
-                    onClick={() => setIsOpen(true)}
-                    className="border border-[#6a1903] rounded-xl shadow-md p-6 flex items-center justify-center text-white font-semibold text-lg transition-transform transform hover:scale-105 hover:bg-[#f1d5cc] cursor-pointer"
-                >
-                    <span className="text-[#6a1903]">+ Create</span>
+            <div className="flex flex-col items-center mb-6">
+                {/* Search Bar */}
+                <div className="flex items-center relative">
+                    <input
+                        type="text"
+                        placeholder="Search products..."
+                        className="bg-white border border-gray-300 rounded-lg py-2 px-4 w-150 focus:outline-none focus:ring-2 focus:ring-black"
+                    />
+                    <img
+                        src={searchIcon}
+                        alt="Search"
+                        className="w-5 h-5 absolute right-3 top-2.5 transition cursor-pointer hover:opacity-70"
+                    />
                 </div>
-
-                {/* Product Cards */}
+                <div className="flex w-full items-center">
+                    <h2 className="text-xl font-semibold">Listed Products</h2>
+                </div>
+            </div>
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6">
                 {products.map((p) => (
-                    <Link key={p.id} href={`/product/${p.id}?seller=true`}>
+                    <Link key={p.id} href={`/product/${p.id}`}>
                         <ProductCard
                             image={p.image}
                             name={p.name}
@@ -131,77 +161,52 @@ const Dashboard = () => {
                     </Link>
                 ))}
             </div>
-
-            {/* Modal */}
-            {isOpen && (
-                <div
-                    onClick={() => setIsOpen(false)}
-                    className="fixed inset-0 flex items-center justify-center backdrop-blur-sm z-50"
-                >
-                    <div
-                        onClick={(e) => e.stopPropagation()}
-                        className="bg-white p-6 rounded-xl shadow-lg w-full max-w-md"
-                    >
-                        <h3 className="text-xl font-semibold mb-4 text-[#6a1903]">
-                            Add Product
-                        </h3>
-                        <form onSubmit={handleSubmit} className="space-y-4">
-                            <input
-                                type="text"
-                                name="name"
-                                placeholder="Product Name"
-                                value={form.name}
-                                onChange={handleChange}
-                                className="w-full border rounded-lg px-4 py-2 outline-none focus:ring-2 focus:ring-black"
-                                required
-                            />
-                            <textarea
-                                name="description"
-                                placeholder="Description"
-                                value={form.description}
-                                onChange={handleChange}
-                                className="w-full border rounded-lg px-4 py-2 outline-none focus:ring-2 focus:ring-black"
-                                required
-                            />
-                            <input
-                                type="text"
-                                name="price"
-                                placeholder="Price"
-                                value={form.price}
-                                onChange={handleChange}
-                                className="w-full border rounded-lg px-4 py-2 outline-none focus:ring-2 focus:ring-black"
-                                required
-                            />
-                            <input
-                                type="text"
-                                name="image"
-                                placeholder="Image URL"
-                                value={form.image}
-                                onChange={handleChange}
-                                className="w-full border rounded-lg px-4 py-2 outline-none focus:ring-2 focus:ring-black"
-                                required
-                            />
-                            <div className="flex justify-end gap-3">
-                                <button
-                                    type="button"
-                                    onClick={() => setIsOpen(false)}
-                                    className="px-4 py-2 rounded-lg border border-[#6a1903] hover:bg-gray-100 text-[#6a1903] cursor-pointer"
-                                >
-                                    Cancel
-                                </button>
-                                <button
-                                    type="submit"
-                                    className="px-4 py-2 bg-[#6a1903] text-white rounded-lg hover:opacity-90 cursor-pointer"
-                                >
-                                    Save
-                                </button>
+            <div className="mt-10">
+                <h2 className="text-xl font-semibold mb-4">Craft Shorts</h2>
+                <div className="flex gap-4 overflow-x-auto pb-4 scrollbar-hide">
+                    {shorts.map((s) => (
+                        <Link key={s.id} href={`/shorts/${s.id}`}>
+                            <div
+                                className="w-48 h-80 flex-shrink-0 rounded-xl overflow-hidden bg-black cursor-pointer relative"
+                                style={{
+                                    backgroundImage: `url(${s.thumbnail})`,
+                                    backgroundSize: "cover",
+                                    backgroundPosition: "center",
+                                }}
+                            >
+                                <video
+                                    src={s.video}
+                                    className="w-full h-full object-cover transition-opacity duration-300"
+                                    muted
+                                    loop
+                                    playsInline
+                                    onMouseEnter={(e) => {
+                                        const video = e.currentTarget;
+                                        video.style.opacity = "1";
+                                        video.play();
+                                    }}
+                                    onMouseLeave={(e) => {
+                                        const video = e.currentTarget;
+                                        video.pause();
+                                        video.currentTime = 0;
+                                        video.style.opacity = "0";
+                                    }}
+                                    style={{
+                                        opacity: 0,
+                                        position: "absolute",
+                                        top: 0,
+                                        left: 0,
+                                    }}
+                                />
                             </div>
-                        </form>
-                    </div>
+                        </Link>
+                    ))}
                 </div>
-            )}
+            </div>
+
+            <Chat />
         </div>
     );
 };
 
-export default Dashboard;
+export default BDashboard;

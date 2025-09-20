@@ -1,11 +1,12 @@
 import React from "react";
-import Buyer from "@/_components/pages/Buyer/Buyer";
+import BDashboard from "@/_components/pages/BDashboard/BDashboard";
 import Navbar from "@/_components/Navbar";
 
 const Page = () => {
     return (
         <>
-            <Buyer />
+            <Navbar />
+            <BDashboard />
         </>
     );
 };

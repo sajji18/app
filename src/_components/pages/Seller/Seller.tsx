@@ -2,7 +2,8 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 
-// ---- Dummy backend functions ----
+const backgroundSeller = "/background-seller.jpg";
+
 const signupSeller = async (mobile: string) => {
     return { success: true };
 };
@@ -11,18 +12,17 @@ const completeOnboarding = async (data: {
     firstName: string;
     lastName: string;
     email: string;
-    shopName: string;
+    brandName: string;
     address: string;
+    mobile: string;
 }) => {
     return { success: true };
 };
 
 const loginSeller = async (mobile: string) => {
-    // TODO: Call backend login
     return { success: true };
 };
 
-// ---- Components ----
 const MobileStep = ({ onNext }: { onNext: (mobile: string) => void }) => {
     const [mobile, setMobile] = useState("");
 
@@ -47,7 +47,7 @@ const MobileStep = ({ onNext }: { onNext: (mobile: string) => void }) => {
             />
             <button
                 type="submit"
-                className="w-full bg-black text-white py-3 rounded-xl font-medium hover:opacity-90 transition cursor-pointer"
+                className="w-full bg-[#f88d77] text-white py-3 rounded-xl font-medium hover:bg-[#c64e36] transition cursor-pointer"
             >
                 Continue
             </button>
@@ -61,7 +61,7 @@ const OnboardingStep = ({ mobile }: { mobile: string }) => {
         firstName: "",
         lastName: "",
         email: "",
-        shopName: "",
+        brandName: "",
         address: "",
     });
 
@@ -71,7 +71,8 @@ const OnboardingStep = ({ mobile }: { mobile: string }) => {
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-        const response = await completeOnboarding({ ...form });
+        console.log("Onboarding data:", { ...form, mobile });
+        const response = await completeOnboarding({ ...form, mobile });
         if (response.success) {
             router.push("/sdashboard");
         } else {
@@ -106,10 +107,10 @@ const OnboardingStep = ({ mobile }: { mobile: string }) => {
                 className="w-full px-4 py-3 border rounded-xl focus:ring-2 focus:ring-black outline-none"
             />
             <input
-                name="shopName"
+                name="brandName"
                 type="text"
-                placeholder="Your Shop Name?"
-                value={form.shopName}
+                placeholder="Your Brand Name?"
+                value={form.brandName}
                 onChange={handleChange}
                 className="w-full px-4 py-3 border rounded-xl focus:ring-2 focus:ring-black outline-none"
             />
@@ -124,7 +125,7 @@ const OnboardingStep = ({ mobile }: { mobile: string }) => {
 
             <button
                 type="submit"
-                className="w-full bg-black text-white py-3 rounded-xl font-medium hover:opacity-90 transition cursor-pointer"
+                className="w-full bg-[#f88d77] text-white py-3 rounded-xl font-medium hover:bg-[#c64e36] transition cursor-pointer"
             >
                 Finish & Go to Dashboard
             </button>
@@ -181,7 +182,7 @@ const LoginStep = () => {
                     />
                     <button
                         type="submit"
-                        className="w-full bg-black text-white py-3 rounded-xl font-medium hover:opacity-90 transition cursor-pointer"
+                        className="w-full bg-[#f88d77] text-white py-3 rounded-xl font-medium hover:bg-[#c64e36] transition cursor-pointer"
                     >
                         Continue
                     </button>
@@ -197,7 +198,7 @@ const LoginStep = () => {
                     />
                     <button
                         type="submit"
-                        className="w-full bg-black text-white py-3 rounded-xl font-medium hover:opacity-90 transition cursor-pointer"
+                        className="w-full bg-[#f88d77] text-white py-3 rounded-xl font-medium hover:bg-[#c64e36] transition cursor-pointer"
                     >
                         Verify & Login
                     </button>
@@ -213,14 +214,24 @@ const Seller = () => {
     const [mobile, setMobile] = useState("");
 
     return (
-        <div className="flex items-center justify-center min-h-screen bg-gray-50">
-            <div className="w-full max-w-sm p-6 bg-white rounded-xl shadow-sm">
+        <div className="flex relative items-center justify-center min-h-screen bg-gray-50">
+            {/* Background */}
+            <div
+                className="absolute inset-0 bg-cover bg-center opacity-[0.9]"
+                style={{
+                    backgroundImage: `url(${backgroundSeller})`,
+                    filter: "blur(0.01px) brightness(0.5) sepia(0.4) hue-rotate(-35deg) saturate(1.2)",
+                }}
+            ></div>
+
+            {/* Seller Card */}
+            <div className="bg-white p-8 md:p-12 lg:p-16 rounded-2xl shadow-lg w-full max-w-sm sm:max-w-md lg:max-w-lg z-10 transition-all duration-300 ease-in-out">
                 {/* Switch Buttons */}
                 <div className="flex justify-between mb-6">
                     <button
                         className={`flex-1 py-2 rounded-lg font-medium cursor-pointer ${
                             mode === "new"
-                                ? "bg-black text-white"
+                                ? "bg-[#f88d77] text-white"
                                 : "bg-gray-100 text-gray-600"
                         }`}
                         onClick={() => {
@@ -233,7 +244,7 @@ const Seller = () => {
                     <button
                         className={`flex-1 py-2 rounded-lg font-medium cursor-pointer ${
                             mode === "existing"
-                                ? "bg-black text-white"
+                                ? "bg-[#f88d77] text-white"
                                 : "bg-gray-100 text-gray-600"
                         }`}
                         onClick={() => {
@@ -245,14 +256,16 @@ const Seller = () => {
                     </button>
                 </div>
 
-                <h2 className="text-2xl font-medium text-center mb-6">
+                {/* Title */}
+                <h2 className="text-3xl sm:text-4xl font-serif font-light text-gray-800 text-center mb-8 tracking-wide">
                     {mode === "new"
                         ? step === "mobile"
-                            ? "Signup as Seller"
+                            ? "Sign Up"
                             : "Complete Onboarding"
-                        : "Login as Seller"}
+                        : "Log In"}
                 </h2>
 
+                {/* Steps */}
                 {mode === "new" ? (
                     step === "mobile" ? (
                         <MobileStep
