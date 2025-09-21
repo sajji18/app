@@ -212,6 +212,7 @@ const Seller = () => {
     const [mode, setMode] = useState<"new" | "existing">("new");
     const [step, setStep] = useState<"mobile" | "onboarding">("mobile");
     const [mobile, setMobile] = useState("");
+    const router = useRouter();
 
     return (
         <div className="flex relative items-center justify-center min-h-screen bg-gray-50">
@@ -280,6 +281,17 @@ const Seller = () => {
                 ) : (
                     <LoginStep />
                 )}
+
+                {/* Buyer login link */}
+                <div className="mt-6 text-center text-sm text-gray-600">
+                    Want to buy products?{" "}
+                    <span
+                        onClick={() => router.push("/buyer")}
+                        className="text-[#f88d77] font-medium cursor-pointer hover:underline"
+                    >
+                        Login as Buyer
+                    </span>
+                </div>
             </div>
         </div>
     );

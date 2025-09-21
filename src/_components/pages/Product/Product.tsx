@@ -1,6 +1,7 @@
 "use client";
 import { useState } from "react";
 import ProductCard from "@/_components/Card";
+import Link from "next/link";
 
 type Product = {
     id: number;
@@ -13,6 +14,8 @@ type Product = {
         value: string;
     }[];
 };
+
+const geminiIcon = "/gemini.png";
 
 const Product = ({
     product,
@@ -54,8 +57,8 @@ const Product = ({
         <div className="mt-30 mb-10 px-4 sm:px-10 flex flex-col items-center">
             <div className="flex w-full mb-6 text-gray-600 text-sm">
                 <span className="text-lg">
-                    <a href="/">Home</a> /{" "}
-                    <a href="/bdashboard">All Products</a> /{" "}
+                    <Link href="/">Home</Link> /{" "}
+                    <Link href="/bdashboard">All Products</Link> /{" "}
                     {editableProduct.name}
                 </span>
             </div>
@@ -72,7 +75,7 @@ const Product = ({
 
                     {isSeller && (
                         <div className="flex flex-col gap-2">
-                            <label className="w-full border border-[#6a1903] text-[#6a1903] bg-white py-3 px-6 font-medium rounded-md hover:bg-[#bea097] hover:text-white transition cursor-pointer text-center">
+                            <label className="w-full border border-[#6a1903] text-[#6a1903] bg-white py-3 px-6 font-medium rounded-md hover:bg-[#bea097] hover:text-white transition cursor-pointer flex items-center justify-center gap-2">
                                 Upload Image
                                 <input
                                     type="file"
@@ -91,12 +94,23 @@ const Product = ({
                                     }}
                                 />
                             </label>
+
+                            <label className="w-full border border-[#6a1903] text-[#6a1903] bg-white py-3 px-6 font-medium rounded-md hover:bg-[#bea097] hover:text-white transition cursor-pointer flex items-center justify-center gap-2">
+                                <span>Push Shorts with AI</span>
+                                <img
+                                    src={geminiIcon}
+                                    alt="Gemini Icon"
+                                    className="w-5 h-5"
+                                />
+                            </label>
+
                             <button
                                 onClick={handleUpdate}
                                 className="w-full bg-[#6a1903] text-white py-3 px-6 font-medium rounded-md hover:bg-[#310c02] transition cursor-pointer"
                             >
                                 Update
                             </button>
+
                             {message && (
                                 <p className="mt-2 text-[#aa3410] font-semibold">
                                     {message}

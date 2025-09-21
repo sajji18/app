@@ -6,15 +6,27 @@ import Navbar from "@/_components/Navbar";
 const shorts = [
     {
         id: 1,
-        video: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4",
+        video: "/vid2.mp4",
     },
     {
         id: 2,
-        video: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/Sintel.mp4",
+        video: "/vid3.mp4",
     },
     {
         id: 3,
-        video: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/TearsOfSteel.mp4",
+        video: "/vid1.mp4",
+    },
+    {
+        id: 4,
+        video: "/vid2.mp4",
+    },
+    {
+        id: 5,
+        video: "/vid3.mp4",
+    },
+    {
+        id: 6,
+        video: "/vid3.mp4",
     },
 ];
 

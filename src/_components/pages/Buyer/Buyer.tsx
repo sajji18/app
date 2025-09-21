@@ -1,14 +1,35 @@
 "use client";
 import { useState } from "react";
+import { useRouter } from "next/navigation";
+import Link from "next/link";
+import axios from "axios";
 
 const Login = () => {
+    const router = useRouter();
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [remember, setRemember] = useState(false);
 
-    const handleSubmit = (e: React.FormEvent) => {
+    const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-        console.log({ email, password, remember });
+        const response = await axios.post(
+            "https://bb5f5d71d2b6.ngrok-free.app/api/auth/login/email",
+            {
+                email,
+                password,
+                remember_me: remember,
+            }
+        );
+        if (response.status !== 200) {
+            alert("Login failed. Please check your credentials.");
+            return;
+        }
+        const { token, role } = response.data;
+        localStorage.setItem("token", token);
+        localStorage.setItem("role", role);
+        role === "seller"
+            ? router.push("/sdashboard")
+            : router.push("/bdashboard");
     };
 
     return (
@@ -106,12 +127,20 @@ const Login = () => {
 
                 {/* Signup link */}
                 <div className="mt-8 text-center">
-                    <a
-                        href="#"
+                    <Link
+                        href="/buyersignup"
                         className="text-sm text-gray-600 hover:text-[#D96B5B] transition-colors"
                     >
                         Not a member? Sign up
-                    </a>
+                    </Link>
+                </div>
+                <div className="mt-2 text-center">
+                    <Link
+                        href="/seller"
+                        className="text-sm text-gray-600 hover:text-[#D96B5B] transition-colors"
+                    >
+                        Become a Seller? Click Here
+                    </Link>
                 </div>
             </div>
         </div>

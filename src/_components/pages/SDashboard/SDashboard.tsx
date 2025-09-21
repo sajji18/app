@@ -1,8 +1,9 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import ProductCard from "@/_components/Card";
 import Chat from "@/_components/Chat";
 import Link from "next/link";
+import axios from "axios";
 
 const Dashboard = () => {
     const [products, setProducts] = useState([
@@ -87,12 +88,25 @@ const Dashboard = () => {
     ]);
 
     const [isOpen, setIsOpen] = useState(false);
+    const [telegramModal, setTelegramModal] = useState(false);
     const [form, setForm] = useState({
         name: "",
         description: "",
         price: "",
         image: "",
     });
+
+    useEffect(() => {
+        const fetchProducts = async () => {
+            const response = await axios.post("https://api.example.com/data", {
+                body: JSON.stringify({ key: "value" }),
+                headers: { "Content-Type": "application/json" },
+            });
+            const data = await response.data;
+            setProducts(data);
+        };
+        fetchProducts();
+    }, []);
 
     const handleChange = (
         e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -109,8 +123,21 @@ const Dashboard = () => {
 
     return (
         <div className="mt-30 px-10">
-            <h2 className="text-2xl font-medium mb-6">My Products</h2>
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6">
+            <h2 className="text-2xl font-medium text-[#6a1903]">My Products</h2>
+
+            <div className="flex w-full justify-center">
+                <div className="inline-flex justify-center items-center mb-6 text-[#6a1903] bg-[#F9E9D9] p-4 rounded-lg">
+                    You can now add products from Telegram.&nbsp;
+                    <span
+                        onClick={() => setTelegramModal(true)}
+                        className="underline cursor-pointer font-semibold hover:text-[#aa3410]"
+                    >
+                        Check Out!
+                    </span>
+                </div>
+            </div>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6 mb-10">
                 {/* Create Card */}
                 <div
                     onClick={() => setIsOpen(true)}
@@ -132,7 +159,7 @@ const Dashboard = () => {
                 ))}
             </div>
 
-            {/* Modal */}
+            {/* Add Product Modal */}
             {isOpen && (
                 <div
                     onClick={() => setIsOpen(false)}
@@ -197,6 +224,44 @@ const Dashboard = () => {
                                 </button>
                             </div>
                         </form>
+                    </div>
+                </div>
+            )}
+
+            {/* Telegram QR Modal */}
+            {telegramModal && (
+                <div
+                    onClick={() => setTelegramModal(false)}
+                    className="fixed inset-0 flex items-center justify-center backdrop-blur-sm z-50"
+                >
+                    <div
+                        onClick={(e) => e.stopPropagation()}
+                        className="bg-white p-6 rounded-xl shadow-lg w-full max-w-sm text-center"
+                    >
+                        <h3 className="text-xl font-semibold mb-4 text-[#6a1903]">
+                            Scan the QR Below
+                        </h3>
+                        <img
+                            src="/qr.jpg"
+                            alt="Telegram QR"
+                            className="mx-auto w-80 h-100 rounded-xl"
+                        />
+                        <div className="mt-4 flex flex-col">
+                            <Link
+                                href="https://t.me/CraftsBuddyBot"
+                                target="_blank"
+                            >
+                                <span className="underline cursor-pointer font-semibold hover:text-[#aa3410]">
+                                    https://t.me/CraftsBuddyBot
+                                </span>
+                            </Link>
+                            <button
+                                onClick={() => setTelegramModal(false)}
+                                className="mt-4 px-4 py-2 bg-[#6a1903] text-white rounded-lg hover:opacity-90 cursor-pointer"
+                            >
+                                Close
+                            </button>
+                        </div>
                     </div>
                 </div>
             )}
